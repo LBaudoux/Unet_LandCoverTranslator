@@ -25,7 +25,7 @@ conda env create -f environment.yml
 
  For pip users : open with a text editor the environment.yml and install manually the packages.
 
-### Dataset 
+### Dataset
 
 Datasets can be downloaded from the following [zenodo archive](https://lien_vers_zenodo). 
 
@@ -75,8 +75,9 @@ Algorithm parameters are stored in the configs/ folder. By default parameters ar
 - train_batch_size,test_batch_size,valid_batch_size : 4 ->n. batch size can be adapted depending on the capacity of your computer. Note that results presented in the paper are computed with batch size = 24.
 
 ### Acknowledgement
-
-* This is a joint work between [Hager Rady](https://github.com/hagerrady13/) and [Mo'men AbdelRazek](https://github.com/moemen95)
+* The French National Research agency as a part of the MAESTRIA project (grant ANR-18-CE23-0023) for funding.
+* The AI4GEO project (http://www.ai4geo.eu/) for material support.
+* [Hager Rady](https://github.com/hagerrady13/) and [Mo'men AbdelRazek](https://github.com/moemen95) for the repository template
 
 
 ### License:
