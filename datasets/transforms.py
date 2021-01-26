@@ -18,7 +18,7 @@ class ToOneHot(object):
         # oso_one_hot=OneHotEncoder(categories=range(1,23))
         with torch.no_grad():
             # print(torch.max(sample["oso"].long()))
-            sample[self.idx1][self.idx2]=F.one_hot(sample[1][0].long(), num_classes=self.nclasses).permute(0,3,1,2,)[0][1:]
+            sample[self.idx1][self.idx2]=F.one_hot(sample[self.idx1][self.idx2].long(), num_classes=self.nclasses).permute(0,3,1,2,)[0][1:]
         # oso_one_hot = OneHotEncoder(categories=[111,112,121,122,123,124])
         # sample["oso_enc"] = oso_one_hot.transform(sample["oso"])
         return sample

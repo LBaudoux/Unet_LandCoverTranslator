@@ -57,7 +57,7 @@ class LandcoverToLandcover(Dataset):
             enc[1:self.d:2]=np.cos(x * self.freq)
             enc[self.d::2]=np.sin(y * self.freq)
             enc[self.d+1::2]=np.cos(y * self.freq)
-            sample = [[image_src,sea,torch.tensor(enc).float(),self.list_image_src[idx]],[image_tgt,]]
+            sample = [[image_src,sea,torch.tensor(enc).float(),self.list_image_src[idx],[x,y]],[image_tgt,]]
         if self.transform:
             sample = self.transform(sample)
         return sample
@@ -78,7 +78,7 @@ class LandcoverToLandcoverDataLoader:
             self.valid_iterations = len(self.valid_loader)
             self.test_iterations= len(self.test_loader)
         elif mode=="full":
-            self.full_loader = DataLoader(LandcoverToLandcover(config.data_folder,self.train_src_info.year,self.train_tgt_info.year,sea_value=config.sea_value,mode="full",ext=".npy",transform=Compose([ToOneHot(len(self.train_tgt_info.id_labels))])), batch_size=self.config.train_batch_size, shuffle=True)
+            self.full_loader = DataLoader(LandcoverToLandcover(config.data_folder,self.test_src_info.year,self.test_tgt_info.year,sea_value=config.sea_value,mode="full",ext=".npy",transform=Compose([ToOneHot(len(self.test_tgt_info.id_labels))])), batch_size=self.config.test_batch_size, shuffle=True)
             self.full_iterations = len(self.full_loader)
         else:
             raise Exception("Unknow dataset mode")

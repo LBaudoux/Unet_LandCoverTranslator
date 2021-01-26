@@ -1,0 +1,17 @@
+name: landcovertranslation
+channels:
+  - defaults
+dependencies:
+  - gdal=2.4.1
+  - numpy
+  - torchaudio
+  - torchvision
+  - pytorch
+  - cudatoolkit=10.1
+  - matplotlib
+  - easydict
+  - imageio
+  - tensorboard
+  - scikit-learn
+  - tensorboardx
+prefix: /home/lbaudoux/Logiciels/anaconda3/envs/landcovertranslation
