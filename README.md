@@ -32,7 +32,7 @@ Datasets can be downloaded from the following [zenodo archive](https://lien_vers
 The folder holds two dataset : 
 
 - the first one is the dataset presented in the paper (oso-to-clc) 
-- the second one contains partially self-covering-patches (oso-to-clc-self-covering) in order to make possible to create a France wide map without patches-edge effects. Thus it should not be used in a training procedure. Example of result can be observe on this [website]().
+- the second one contains partially self-covering-patches (oso-to-clc-self-covering) in order to make possible to create a France wide map without patches-edge effects. Thus it should not be used in a training procedure. Example of result can be observe on this [website](https://oso-to-clc.herokuapp.com).
 
 Folder structure is presented below :
 
