@@ -58,8 +58,8 @@ prj = 'PROJCS["RGF93 / Lambert-93",GEOGCS["RGF93",DATUM["Reseau_Geodesique_Franc
 width, height = 12681,11915
 no_data_value = 0.0
 
-# arr_p = np.zeros((1, width, height)) - 1
-arr_t = np.zeros((1, width, height)) - 1
+arr_p = np.zeros((1, width, height)) - 1
+# arr_t = np.zeros((1, width, height)) - 1
 
 model = net(config)
 # checkpoint = torch.load(m,map_location=torch.device('cpu'))
@@ -72,18 +72,16 @@ model.eval()
 with torch.no_grad():
     for data, target in data_loader.full_loader:
         data, mer, coord, n, xy, target = data[0], data[1], data[2], data[3], data[4], target[0]
-        # data, mer, coord, target = data.to(device), mer.to(device), coord.to(device), target.to(device)
-        # output = model(data, mer, coord)
-        # output = model(data,mer)
-        # print(x,y)
+        data, mer, coord, target = data.to(device), mer.to(device), coord.to(device), target.to(device)
+        output = model(data, mer, coord)
         ecart_x = int(np.round(abs(xy[0] * 10000 - gt[0])/ 100,0))
         ecart_y = int(np.round(abs(xy[1] * 10000 - gt[3]) / 100,0))
 
-        # arr_p[0, ecart_x + 5:ecart_x + 60, ecart_y + 5:ecart_y + 60] = np.transpose(torch.argmax(output, dim=1)[0, 5:60, 5:60].cpu().numpy(), (1, 0))
-        arr_t[0, ecart_x + 5:ecart_x + 60, ecart_y + 5:ecart_y + 60] = np.transpose(torch.argmax(target, dim=1)[0, 5:60, 5:60].cpu().numpy(), (1, 0))
+        arr_p[0, ecart_x + 5:ecart_x + 60, ecart_y + 5:ecart_y + 60] = np.transpose(torch.argmax(output, dim=1)[0, 5:60, 5:60].cpu().numpy(), (1, 0))
+        # arr_t[0, ecart_x + 5:ecart_x + 60, ecart_y + 5:ecart_y + 60] = np.transpose(torch.argmax(target, dim=1)[0, 5:60, 5:60].cpu().numpy(), (1, 0))
 
-# arr_p = np.transpose(arr_p, (0, 2, 1)) + 1
-arr_t = np.transpose(arr_t, (0, 2, 1)) + 1
+arr_p = np.transpose(arr_p, (0, 2, 1)) + 1
+# arr_t = np.transpose(arr_t, (0, 2, 1)) + 1
 cmap = tgt_type.cmap
 id_labels = tgt_type.id_labels
 ct = gdal.ColorTable()
@@ -92,30 +90,12 @@ for label, color in zip(id_labels, cmap):
     ct.SetColorEntry(i + 1, color)
     i += 1
 
-# driver = gdal.GetDriverByName('GTiff')
-# dataset = driver.Create(join(out_dir,"predicted_CLC_2018_map.tif"), np.shape(arr_p)[2], np.shape(arr_p)[1], 1, gdal.GDT_UInt16)
-# dataset.SetGeoTransform(gt)
-# dataset.SetProjection(prj)
-# for i in range(1):
-#     dataset.GetRasterBand(i + 1).WriteArray(arr_p[i])
-#     dataset.GetRasterBand(i + 1).SetNoDataValue(no_data_value)
-#     try:
-#         dataset.GetRasterBand(i + 1).SetRasterColorTable(ct)
-#     except:
-#         pass
-# dataset.FlushCache()
-# dataset = None
-
 driver = gdal.GetDriverByName('GTiff')
-dataset = driver.Create(join(out_dir,"Original_CLC_2018_mapv2_round.tif"), np.shape(arr_t)[2], np.shape(arr_t)[1], 1, gdal.GDT_UInt16)
-# gt=list(gt)
-# # gt[3]=gt[3]-100
-# # gt[0]=gt[0]+100
-# gt=tuple(gt)
+dataset = driver.Create(join(out_dir,"predicted_CLC_2018_map.tif"), np.shape(arr_p)[2], np.shape(arr_p)[1], 1, gdal.GDT_UInt16)
 dataset.SetGeoTransform(gt)
 dataset.SetProjection(prj)
 for i in range(1):
-    dataset.GetRasterBand(i + 1).WriteArray(arr_t[i])
+    dataset.GetRasterBand(i + 1).WriteArray(arr_p[i])
     dataset.GetRasterBand(i + 1).SetNoDataValue(no_data_value)
     try:
         dataset.GetRasterBand(i + 1).SetRasterColorTable(ct)
@@ -123,3 +103,17 @@ for i in range(1):
         pass
 dataset.FlushCache()
 dataset = None
+
+# driver = gdal.GetDriverByName('GTiff')
+# dataset = driver.Create(join(out_dir,"Original_CLC_2018_mapv2_round.tif"), np.shape(arr_t)[2], np.shape(arr_t)[1], 1, gdal.GDT_UInt16)
+# dataset.SetGeoTransform(gt)
+# dataset.SetProjection(prj)
+# for i in range(1):
+#     dataset.GetRasterBand(i + 1).WriteArray(arr_t[i])
+#     dataset.GetRasterBand(i + 1).SetNoDataValue(no_data_value)
+#     try:
+#         dataset.GetRasterBand(i + 1).SetRasterColorTable(ct)
+#     except:
+#         pass
+# dataset.FlushCache()
+# dataset = None
