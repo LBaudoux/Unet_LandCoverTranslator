@@ -27,7 +27,7 @@ conda env create -f environment.yml
 
 ### Dataset
 
-Datasets can be downloaded from the following [zenodo archive](https://lien_vers_zenodo). 
+Datasets can be downloaded from the following [zenodo archive](https://doi.org/10.5281/zenodo.4459484). 
 
 The folder holds two dataset : 
 
